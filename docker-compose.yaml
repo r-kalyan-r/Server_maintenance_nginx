@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  nginx-front:
+    image: nginx
+    volumes:
+      - ./nginx-front.conf:/etc/nginx/conf.d/default.conf
+     #- ./nginx-front_ssl.conf:/etc/nginx/conf.d/default.conf #====> you can use any one if , you want ssl on then uncomment it and remove first volume 
+     #- ./directory_of/ssl/certs/certificate.crt:/directory_of/ssl/certs/certificate.crt  #=====>for ssl on uncomment it 
+     #- ./directory_of/ssl/certs_key/certificate.key:/directory_of/ssl/certs_key/certificate.key #=====>for ssl on uncomment it
+    depends_on:
+      - UI
+      - maintenance
+    ports:
+      - 80:80
+      #- 443:443 #=====> uncomment it if you want to ssl on
+
+  UI:
+    image: nginx
+    volumes:
+      - ./ui.html:/usr/share/nginx/html/index.html
+
+  maintenance:
+    image: nginx
+    volumes:
+      - ./maintenance.html:/usr/share/nginx/html/index.html
+      - ./maintenance.conf:/etc/nginx/conf.d/default.conf
+     #- ./directory_of/ssl/certs/certificate.crt:/directory_of/ssl/certs/certificate.crt #======> for ssl on uncomment it 
+     #- ./directory_of/ssl/certs_key/certificate.key:/directory_of/ssl/certs_key/certificate.key #======> for ssl on uncomment it 
